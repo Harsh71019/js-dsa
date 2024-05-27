@@ -5,7 +5,6 @@ function checkSquares(arr1, arr2) {
   if (arr1.length !== arr2.length) {
     return false;
   }
-
   let obj1 = {};
   let obj2 = {};
 
