@@ -10,14 +10,27 @@ function debounce(callback, delay) {
   };
 }
 
-function throttle(callback, delay) {
-  let timeoutId;
-  return (...args) => {
-    if (timeoutId) {
-      clearInterval(timeoutId);
+function throttle(callback, delay = 500) {
+  let isThrottled = false;
+  let savedArgs = null;
+
+  const executeCallback = () => {
+    if (savedArgs === null) {
+      isThrottled = false;
+    } else {
+      callback(...savedArgs);
+      savedArgs === null;
+      setTimeout(executeCallback, delay);
     }
-    timeoutId = setInterval(() => {
-      callback(...args);
-    }, delay);
+  };
+
+  return (...args) => {
+    if (isThrottled) {
+      savedArgs = args;
+      return;
+    }
+    callback(...args);
+    isThrottled = true;
+    setTimeout(executeCallback, delay);
   };
 }
